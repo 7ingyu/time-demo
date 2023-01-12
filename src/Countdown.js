@@ -10,6 +10,10 @@ export default function Countdown ({ idx, handleDelete }) {
   const [ ended, setEnded ] = useState(false);
 
   useEffect(() => {
+    setEnded(false);
+  }, [hr, min, sec]);
+
+  useEffect(() => {
     const startCountdown = () => {
       let start = new Date().getTime();
       let duration = (Number(sec) + (Number(min) * 60) + (Number(hr) * 60 * 60)) * 1000;
@@ -21,6 +25,7 @@ export default function Countdown ({ idx, handleDelete }) {
       let remaining = Math.floor((end - Number(new Date().getTime())) / 1000);
       if (remaining <= 0) {
         setTime([0, 0, 0]);
+        setEnded(true);
         clearInterval(timerRef.current);
         timerRef.current = 0;
         return;
@@ -61,10 +66,10 @@ export default function Countdown ({ idx, handleDelete }) {
   };
 
   return (
-    <div className="row">
+    <div className="row mb-3">
       <div className="col-12">
         <div className="mw-20rem">
-          <div className="input-group border rounded">
+          <div className={`timer input-group rounded${(started && ended) ? ' timer-ended' : ''}`}>
             <input
               type="number"
               value={hr}
@@ -96,7 +101,7 @@ export default function Countdown ({ idx, handleDelete }) {
             <button
               className="btn btn-outline-dark"
               onClick={() => setStarted(false)}>
-                <i className={`text-${(!timerRef.current) ? 'muted' : 'danger'} bi bi-stop-fill`} />
+                <i className={`text-${(!started) ? 'muted' : 'danger'} bi bi-stop-fill`} />
             </button>
             <button
               className="btn btn-outline-dark"
