@@ -7,6 +7,7 @@ export default function Countdown ({ idx, handleDelete }) {
   const [ min, setMin ] = useState('00');
   const [ sec, setSec ] = useState('00');
   const [ started, setStarted ] = useState(false);
+  const [ ended, setEnded ] = useState(false);
 
   useEffect(() => {
     const startCountdown = () => {
@@ -41,6 +42,7 @@ export default function Countdown ({ idx, handleDelete }) {
     };
 
     if (started) {
+      setEnded(false);
       startCountdown();
     } else {
       clearInterval(timerRef.current);
